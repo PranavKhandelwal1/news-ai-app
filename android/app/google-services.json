@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "687295194504",
+    "project_id": "news-assistant-8aea9",
+    "storage_bucket": "news-assistant-8aea9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:687295194504:android:9cb8ef2456b464f2ddc63d",
+        "android_client_info": {
+          "package_name": "com.example.news_assistant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "687295194504-25bju3186n28qrhmqgqcv32ieaqcfp94.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYzChlBmJIqTImcvlNOFz4WiePjAnfJss"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "687295194504-25bju3186n28qrhmqgqcv32ieaqcfp94.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "687295194504-rp6ohi49o53smadblqkculvackv88tfc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.newsAssistant"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
