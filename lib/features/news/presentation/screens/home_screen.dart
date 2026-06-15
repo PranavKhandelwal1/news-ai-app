@@ -17,6 +17,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../App_colors.dart';
 import '../../providers/news_provider.dart';
 import '../widgets/news_card.dart';
+import 'article_detail_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -106,13 +107,16 @@ class HomeScreen extends ConsumerWidget {
                 ...articles.map(
                       (article) => NewsCard(
                     article: article,
-
-                    onTap: () {
-
-                      /// TODO:
-                      /// Navigate to Article Detail Screen
-
-                    },
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => ArticleDetailScreen(
+                                article: article,
+                              ),
+                            ),
+                          );
+                        },
                   ),
                 ),
               ],
