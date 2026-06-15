@@ -46,4 +46,3 @@ app.*.map.json
 
 
 # Hiding API keys
-lib/core/constants/app_constants.dart
