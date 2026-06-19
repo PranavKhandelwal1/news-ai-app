@@ -2,6 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:news_assistant/features/profile/presentation/screens/Widgets/customProfileOptions.dart';
 
+import '../../../auth/presentation/screens/login_screen.dart';
+import '../../../bookmarks/presentation/screens/bookmarks_screen.dart';
+
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
@@ -24,7 +27,7 @@ class ProfileScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(15),
         child: Column(
           children: [
             Row(
@@ -42,8 +45,8 @@ class ProfileScreen extends StatelessWidget {
 
                 // User Name
                 Text(
-                  "Angelika",
-                  // user?.displayName ??"New User",
+                  // "Angelika",
+                  user?.displayName ??"New User",
                   style: TextStyle(
                       fontSize:18,
                       color: Colors.black,
@@ -103,97 +106,109 @@ class ProfileScreen extends StatelessWidget {
             ),
             // SizedBox(height: 10),
 
-            CustomProfileOptions(title: 'Bookmark', trailing: Icon(Icons.arrow_forward_ios,size: 15)),
+            // Bookmark
+            CustomProfileOptions(
+              icon: Icons.bookmark,
+              title: "Bookmarks",
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const BookmarksScreen(),
+                  ),
+                );
+              },
+            ),
 
-            // SizedBox(height: 20),
-
-            CustomProfileOptions(title: 'History', trailing: Icon(Icons.arrow_forward_ios,size: 15)),
-
-            // SizedBox(height: 20),
-
+            // History
+            CustomProfileOptions(
+              icon: Icons.history,
+              title: "History",
+              onTap: () {
+                // TODO
+              },
+            ),
             // Display
-            CustomProfileOptions(title: 'Display settings', trailing: Icon(Icons.arrow_forward_ios,size: 15)),
-
-            // SizedBox(height: 20),
+            CustomProfileOptions(
+              icon: Icons.settings_display,
+              title: "Display settings",
+              onTap: () {
+                // todo
+              },
+            ),
 
             // Customize
-            CustomProfileOptions(title: 'Customize your feed', trailing: Icon(Icons.arrow_forward_ios,size: 15)),
-
+            CustomProfileOptions(
+              icon: Icons.dashboard_customize_outlined,
+              title: "Customize your feed",
+              onTap: () {
+                // TODO
+              },
+            ),
             // SizedBox(height: 20),
 
             // Notification
-            CustomProfileOptions(title: 'Notification',
-                trailing: Transform.scale(
-                  scale: 0.8, // smaller size
-                  child: Switch(
-                    value: notifications,
-                    activeColor: Colors.black,
-                    activeTrackColor: Colors.black54,
-                    inactiveThumbColor: Colors.black,
-                    inactiveTrackColor: Colors.grey,
-                    onChanged: (value) {
-                      //TODO
-                    },
-                  ),
-                )
-            ),
+
+            CustomProfileOptions(icon: Icons.notifications, title: 'Notification', onTap: (){
+
+            }),
 
             // Region
             CustomProfileOptions(
+              icon: Icons.location_on,
               title: "Region",
-              trailing: DropdownButton<String>(
-                value: selectedRegion,
-                underline: const SizedBox(),
-                items: const [
-                  DropdownMenuItem(
-                    value: "IND",
-                    child: Text("IND"),
-                  ),
-                  DropdownMenuItem(
-                    value: "USA",
-                    child: Text("USA"),
-                  ),
-                ],
-                onChanged: (value) {
-                  // TODO Toggle
-                },
-              ),
+              onTap: () {
+                // TODO
+              },
             ),
+
 
             // News Language
             CustomProfileOptions(
+              icon: Icons.language,
               title: "News Language",
-              trailing: DropdownButton<String>(
-                value: selectedLanguage,
-                underline: const SizedBox(),
-                items: const [
-                  DropdownMenuItem(
-                    value: "English",
-                    child: Text("English"),
-                  ),
-                  DropdownMenuItem(
-                    value: "Hindi",
-                    child: Text("Hindi"),
-                  ),
-                ],
-                onChanged: (value) {
-                  // TODO
-                },
-              ),
+              onTap: () {
+                // TODO
+              },
             ),
 
 
             // AI Voice
-            CustomProfileOptions(title: 'AI Voice', trailing: Icon(Icons.arrow_forward_ios,size: 15)),
-
+            CustomProfileOptions(
+              icon: Icons.settings_voice,
+              title: "AI Voice",
+              onTap: () {
+                // TODO
+              },
+            ),
             // SizedBox(height: 20),
 
             // Contact and Support
-            CustomProfileOptions(title: 'Contact and Support', trailing: Icon(Icons.arrow_forward_ios,size: 15)),
+            CustomProfileOptions(
+              icon: Icons.contact_phone,
+              title: "Contact and Support",
+              onTap: () {
+                // TODO
+              },
+            ),
+            // Sign out
+            CustomProfileOptions(
+              icon: Icons.logout, color: Colors.red,
+              title: "Sign out",
+              onTap: () async {
+                await FirebaseAuth.instance.signOut();
 
-            // SizedBox(height: 20),
+                if (!context.mounted) return;
 
-            CustomProfileOptions(title: 'Sign out', trailing: Icon(Icons.logout,size: 20, color: Colors.red)),
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const LoginScreen(),
+                  ),
+                      (route) => false,
+                );
+              },
+            ),
 
           ],
         ),
