@@ -1,9 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:news_assistant/features/profile/presentation/screens/Widgets/customProfileOptions.dart';
+import 'package:news_assistant/features/profile/presentation/screens/ai_voice_screen.dart';
+import 'package:news_assistant/features/profile/presentation/screens/contact_support_screen.dart';
+import 'package:news_assistant/features/profile/presentation/screens/customize_your_feed_screen.dart';
+import 'package:news_assistant/features/profile/presentation/screens/display_settings_screen.dart';
+import 'package:news_assistant/features/profile/presentation/screens/news_language_screen.dart';
+import 'package:news_assistant/features/profile/presentation/screens/notification_screen.dart';
+import 'package:news_assistant/features/profile/presentation/screens/region_screen.dart';
 
 import '../../../auth/presentation/screens/login_screen.dart';
 import '../../../bookmarks/presentation/screens/bookmarks_screen.dart';
+import 'history_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -69,8 +77,6 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
 
-            SizedBox(height: 10),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -104,8 +110,8 @@ class ProfileScreen extends StatelessWidget {
                 )
               ],
             ),
-            // SizedBox(height: 10),
 
+            const Divider(color: Colors.grey, thickness: 1),
             // Bookmark
             CustomProfileOptions(
               icon: Icons.bookmark,
@@ -125,7 +131,12 @@ class ProfileScreen extends StatelessWidget {
               icon: Icons.history,
               title: "History",
               onTap: () {
-                // TODO
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const history_screen(),
+                  ),
+                );
               },
             ),
             // Display
@@ -133,7 +144,12 @@ class ProfileScreen extends StatelessWidget {
               icon: Icons.settings_display,
               title: "Display settings",
               onTap: () {
-                // todo
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const display_setting_screeen(),
+                  ),
+                );
               },
             ),
 
@@ -142,7 +158,12 @@ class ProfileScreen extends StatelessWidget {
               icon: Icons.dashboard_customize_outlined,
               title: "Customize your feed",
               onTap: () {
-                // TODO
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const customize_your_feed_screen(),
+                  ),
+                );
               },
             ),
             // SizedBox(height: 20),
@@ -150,7 +171,12 @@ class ProfileScreen extends StatelessWidget {
             // Notification
 
             CustomProfileOptions(icon: Icons.notifications, title: 'Notification', onTap: (){
-
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const notification_screen(),
+                ),
+              );
             }),
 
             // Region
@@ -158,7 +184,12 @@ class ProfileScreen extends StatelessWidget {
               icon: Icons.location_on,
               title: "Region",
               onTap: () {
-                // TODO
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const region_screen(),
+                  ),
+                );
               },
             ),
 
@@ -168,7 +199,12 @@ class ProfileScreen extends StatelessWidget {
               icon: Icons.language,
               title: "News Language",
               onTap: () {
-                // TODO
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const news_language_screen(),
+                  ),
+                );
               },
             ),
 
@@ -178,7 +214,12 @@ class ProfileScreen extends StatelessWidget {
               icon: Icons.settings_voice,
               title: "AI Voice",
               onTap: () {
-                // TODO
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const ai_voice_screen(),
+                  ),
+                );
               },
             ),
             // SizedBox(height: 20),
@@ -188,7 +229,12 @@ class ProfileScreen extends StatelessWidget {
               icon: Icons.contact_phone,
               title: "Contact and Support",
               onTap: () {
-                // TODO
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const contact_support_screen(),
+                  ),
+                );
               },
             ),
             // Sign out
