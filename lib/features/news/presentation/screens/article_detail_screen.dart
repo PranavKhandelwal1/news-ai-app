@@ -21,6 +21,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:news_assistant/features/assistant/providers/tts_provider.dart';
 import '../../../bookmarks/providers/bookmark_provider.dart';
 import '../../data/models/news_model.dart';
@@ -155,44 +156,57 @@ class _ArticleDetailScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: const Text(
+          "Read Full Article ",
+          textAlign: TextAlign.start,
+          style: TextStyle(
+              fontWeight: FontWeight.bold
+          ),
+        ),
+        centerTitle: true,
+      ),
+
       body: CustomScrollView(
         slivers: [
-
           /// ===================================================
           /// App Bar with Hero Image
           /// ===================================================
-          SliverAppBar(
-            expandedHeight: 280,
-            pinned: true,
-
-            flexibleSpace: FlexibleSpaceBar(
-              background: Image.network(
-                widget.article.image,
-                fit: BoxFit.cover,
-
-                errorBuilder: (
-                    context,
-                    error,
-                    stackTrace,
-                    ) {
-                  return Container(
-                    color: Colors.grey.shade300,
-                    child: const Center(
-                      child: Icon(
-                        Icons.image_not_supported,
-                        size: 50,
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
+          // SliverAppBar(
+          //   automaticallyImplyLeading: false,
+          //   expandedHeight: 280,
+          //   pinned: true,
+          //
+          //   flexibleSpace: FlexibleSpaceBar(
+          //     background: Image.network(
+          //       widget.article.image,
+          //       fit: BoxFit.cover,
+          //
+          //       errorBuilder: (
+          //           context,
+          //           error,
+          //           stackTrace,
+          //           ) {
+          //         return Container(
+          //           color: Colors.grey.shade300,
+          //           child: const Center(
+          //             child: Icon(
+          //               Icons.image_not_supported,
+          //               size: 50,
+          //             ),
+          //           ),
+          //         );
+          //       },
+          //     ),
+          //   ),
+          // ),
 
           /// ===================================================
           /// Article Content
           /// ===================================================
           SliverToBoxAdapter(
+
             child: Padding(
               padding: const EdgeInsets.all(20),
 
@@ -201,19 +215,6 @@ class _ArticleDetailScreenState
                 CrossAxisAlignment.start,
 
                 children: [
-
-                  /// News Source
-                  Text(
-                    widget.article.source,
-                    style: const TextStyle(
-                      color: Colors.blue,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-
-                  const SizedBox(height: 10),
-
                   /// News Headline
                   Text(
                     widget.article.title,
@@ -224,36 +225,122 @@ class _ArticleDetailScreenState
                     ),
                   ),
 
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 10),
 
-                  /// Publication Date
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(
-                        Icons.access_time,
-                        size: 18,
-                        color: Colors.grey,
+
+                      /// Left side (Source + Date)
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Source • ${widget.article.source}",
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+
+                            Text(
+                              formatDate(widget.article.publishedAt),
+                              style: TextStyle(
+                                color: Colors.grey.shade600,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
 
-                      const SizedBox(width: 6),
+                      const SizedBox(width: 16),
 
-                      Expanded(
-                        child: Text(
-                          widget.article.publishedAt,
-                          style: TextStyle(
-                            color: Colors.grey.shade600,
-                          ),
+                      /// Right side (Bookmark)
+                      GestureDetector(
+                        onTap: _toggleBookmark,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              isBookmarked
+                                  ? Icons.bookmark
+                                  : Icons.bookmark_border,
+                              size: 26,
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              isBookmarked ? "Saved" : "Save",
+                              style: const TextStyle(
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
 
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 20),
 
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.network(
+                      widget.article.image,
+                      height: 220,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          height: 220,
+                          color: Colors.grey.shade300,
+                          child: const Center(
+                            child: Icon(
+                              Icons.image_not_supported,
+                              size: 50,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  SizedBox(height: 10),
                   /// Divider
-                  const Divider(),
+                  const Divider(color: Colors.black),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: CircleAvatar(
+                          backgroundColor: Colors.black,
+                          radius: 20,
+                          child: Icon(
+                              Icons.read_more,
+                            color: Colors.white,
+                            size: 25,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                          "Read Summary With AI",
+                          style:  TextStyle(
+                            color: Colors.grey,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                      ),
+                    ],
+                  ),
+                  const Divider(color: Colors.black,),
 
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 10),
 
                   /// Description
                   if (widget.article.description.isNotEmpty)
@@ -281,6 +368,7 @@ class _ArticleDetailScreenState
 
                   const SizedBox(height: 40),
 
+
                   /// ===================================================
                   /// Future Action Buttons
                   /// ===================================================
@@ -290,47 +378,47 @@ class _ArticleDetailScreenState
 
                     children: [
 
-                      /// Bookmark
-                      GestureDetector(
-                        onTap: _toggleBookmark,
-                        child: Column(
-                          children: [
-                            Icon(
-                              isBookmarked
-                                  ? Icons.bookmark
-                                  : Icons.bookmark_border,
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              isBookmarked
-                                  ? "Saved"
-                                  : "Save",
-                            ),
-                          ],
-                        ),
-                      ),
+                      // /// Bookmark
+                      // GestureDetector(
+                      //   onTap: _toggleBookmark,
+                      //   child: Column(
+                      //     children: [
+                      //       Icon(
+                      //         isBookmarked
+                      //             ? Icons.bookmark
+                      //             : Icons.bookmark_border,
+                      //       ),
+                      //       const SizedBox(height: 4),
+                      //       Text(
+                      //         isBookmarked
+                      //             ? "Saved"
+                      //             : "Save",
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                      //
+                      // /// Listen
+                      // GestureDetector(
+                      //   onTap: _toggleListen,
+                      //
+                      //   child: Column(
+                      //     children: [
+                      //       Icon( isPlaying ? Icons.stop : Icons.volume_up_outlined),
+                      //       const SizedBox(height: 4),
+                      //       Text(isPlaying ? "Stop" : "Listen"),
+                      //     ],
+                      //   ),
+                      // ),
 
-                      /// Listen
-                      GestureDetector(
-                        onTap: _toggleListen,
-
-                        child: Column(
-                          children: [
-                            Icon( isPlaying ? Icons.stop : Icons.volume_up_outlined),
-                            const SizedBox(height: 4),
-                            Text(isPlaying ? "Stop" : "Listen"),
-                          ],
-                        ),
-                      ),
-
-                      /// AI Summary
-                      Column(
-                        children: const [
-                          Icon(Icons.auto_awesome),
-                          SizedBox(height: 4),
-                          Text("Summary"),
-                        ],
-                      ),
+                      // /// AI Summary
+                      // Column(
+                      //   children: const [
+                      //     Icon(Icons.auto_awesome),
+                      //     SizedBox(height: 4),
+                      //     Text("Summary"),
+                      //   ],
+                      // ),
 
                       /// Share
                       Column(
@@ -350,6 +438,21 @@ class _ArticleDetailScreenState
           ),
         ],
       ),
+
+      //  Floating Action button
+      floatingActionButton: FloatingActionButton(
+        onPressed: _toggleListen,
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
+        shape: const CircleBorder(),
+        child: Icon(
+          isPlaying ? Icons.stop : Icons.volume_up_outlined,
+        ),
+      ),
     );
   }
+}
+String formatDate(String date) {
+  final parsedDate = DateTime.parse(date);
+  return DateFormat('MMM d, yyyy • h:mm a').format(parsedDate);
 }
