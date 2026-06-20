@@ -73,6 +73,16 @@ class _ArticleDetailScreenState
         setState(() {
           isBookmarked = false;
         });
+
+        if (!mounted) return;
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Bookmark Removed",
+            ),
+          ),
+        );
       } else {
         await ref
             .read(bookmarkRepositoryProvider)
@@ -81,6 +91,16 @@ class _ArticleDetailScreenState
         setState(() {
           isBookmarked = true;
         });
+
+        if (!mounted) return;
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Article Saved",
+            ),
+          ),
+        );
       }
     } catch (e) {
       debugPrint(e.toString());

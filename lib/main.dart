@@ -6,10 +6,10 @@ import 'features/auth/presentation/screens/splash_screen.dart';
 import 'firebase_options.dart';
 import 'core/theme/app_theme.dart';
 void main() async {
+  // Ensure Flutter is Initialized
   WidgetsFlutterBinding.ensureInitialized();
 
   try {
-
     if (Firebase.apps.isEmpty) {
       print("BEFORE FIREBASE");
       await Firebase.initializeApp(
@@ -28,6 +28,7 @@ void main() async {
   };
 
   runApp(
+    // Riverpod requires a root ProviderScope.
     const ProviderScope(
       child: NewsAssistant(),
     ),
