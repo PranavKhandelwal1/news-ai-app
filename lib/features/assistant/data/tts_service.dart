@@ -13,6 +13,8 @@
 /// Project: News Assistant
 /// =======================================================
 
+import 'dart:ui';
+
 import 'package:flutter_tts/flutter_tts.dart';
 
 class TtsService {
@@ -46,5 +48,13 @@ class TtsService {
   /// ===================================================
   Future<void> stop() async {
     await _flutterTts.stop();
+  }
+
+  void setCompletionHandler(VoidCallback handler) {
+    _flutterTts.setCompletionHandler(handler);
+  }
+
+  void setCancelHandler(VoidCallback handler) {
+    _flutterTts.setCancelHandler(handler);
   }
 }

@@ -21,6 +21,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:news_assistant/features/assistant/providers/tts_provider.dart';
 import '../../../bookmarks/providers/bookmark_provider.dart';
 import '../../data/models/news_model.dart';
 class ArticleDetailScreen extends ConsumerStatefulWidget {
@@ -40,11 +41,31 @@ class _ArticleDetailScreenState
     extends ConsumerState<ArticleDetailScreen> {
 
   bool isBookmarked = false;
+  bool isPlaying = false;
+  late final tts;
 
   @override
   void initState() {
     super.initState();
+
+    tts = ref.read(ttsProvider);
+
     _checkBookmark();
+
+    tts.setCompletionHandler(() {
+      if (mounted) {
+        setState(() {
+          isPlaying = false;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    debugPrint("ArticleDetailScreen disposed");
+    tts.stop();
+    super.dispose();
   }
 
   Future<void> _checkBookmark() async {
@@ -101,6 +122,30 @@ class _ArticleDetailScreenState
             ),
           ),
         );
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  Future<void> _toggleListen() async {
+    try {
+      if (isPlaying) {
+        await tts.stop();
+        setState(() {
+          isPlaying = false;
+        });
+      } else {
+        final fullText =
+            "${widget.article.title}. "
+            "${widget.article.description}. "
+            "${widget.article.content}";
+
+        await tts.speak(fullText);
+
+        setState(() {
+          isPlaying = true;
+        });
       }
     } catch (e) {
       debugPrint(e.toString());
@@ -266,12 +311,16 @@ class _ArticleDetailScreenState
                       ),
 
                       /// Listen
-                      Column(
-                        children: const [
-                          Icon(Icons.volume_up_outlined),
-                          SizedBox(height: 4),
-                          Text("Listen"),
-                        ],
+                      GestureDetector(
+                        onTap: _toggleListen,
+
+                        child: Column(
+                          children: [
+                            Icon( isPlaying ? Icons.stop : Icons.volume_up_outlined),
+                            const SizedBox(height: 4),
+                            Text(isPlaying ? "Stop" : "Listen"),
+                          ],
+                        ),
                       ),
 
                       /// AI Summary
