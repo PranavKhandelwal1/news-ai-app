@@ -71,8 +71,11 @@ dependencies:
   cached_network_image: ^3.4.1
   shimmer: ^3.0.0
 
-  # Utils
+  # Utils (Datetime)
   intl: ^0.20.2
+
+  # Gemini
+  google_generative_ai: ^0.4.6
 
 dev_dependencies:
   flutter_test:

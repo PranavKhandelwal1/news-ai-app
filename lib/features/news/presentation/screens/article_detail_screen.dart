@@ -284,7 +284,7 @@ class _ArticleDetailScreenState
                     ],
                   ),
 
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
 
                   ClipRRect(
                     borderRadius: BorderRadius.circular(16),
