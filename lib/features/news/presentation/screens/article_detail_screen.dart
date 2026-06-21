@@ -23,6 +23,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:news_assistant/features/assistant/providers/tts_provider.dart';
+import 'package:news_assistant/features/news/providers/share_provider.dart';
 import '../../../bookmarks/providers/bookmark_provider.dart';
 import '../../data/models/news_model.dart';
 class ArticleDetailScreen extends ConsumerStatefulWidget {
@@ -421,12 +422,23 @@ class _ArticleDetailScreenState
                       // ),
 
                       /// Share
-                      Column(
-                        children: const [
-                          Icon(Icons.share_outlined),
-                          SizedBox(height: 4),
-                          Text("Share"),
-                        ],
+                      GestureDetector(
+                        onTap: () async {
+                          await ref
+                              .read(shareProvider)
+                              .shareArticle(
+                            title: widget.article.title,
+                            url: widget.article.url,
+                          );
+                        },
+
+                        child: const Column(
+                          children: [
+                            Icon(Icons.share_outlined),
+                            SizedBox(height: 4),
+                            Text("Share"),
+                          ],
+                        ),
                       ),
                     ],
                   ),
